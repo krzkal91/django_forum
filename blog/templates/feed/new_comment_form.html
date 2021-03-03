@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+New comment
+{%  endblock %}
+
+{% block content %}
+        <div class="jumbotron">
+        <h3>Type in what you want</h3>
+            <form action="{% url 'add_comment' form.instance.id %}" method="post" enctype="multipart/form-data">
+                {{ form | crispy }}
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Create</button>
+            </form>
+        </div>
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+Main feed
+{%  endblock %}
+
+{% block content %}
+        <div class="jumbotron">
+    <h1>Most recent posts... DESC OFC</h1>
+
+
+        </div>
+    <br><br>
+        <ul class="media-list">
+            {% for post in allPosts %}
+                <li class="media">
+                    <div class="media-left">
+                        <img src="../media/{{ post.photo }}" class="media-object" style="width:400px" onerror="this.src='../static/img/hadoop.png'" alt="No_image_avatar">
+                    </div>
+                    <div class="media-body">
+                        <h2 class="media-heading">{{ post.title }}</h2>
+                        <br> Author: {{ post.author }} <br>
+                        <br>Published: {{ post.publishing_time }}, Edited: {{ post.last_update_time }} <br>
+                        <div class="jumbotron">
+                            <p>{{ post.content }}</p>
+                            {% if user == post.author %}
+                                <a class="btn btn-primary"
+                               href="{% url 'edit_post' post.id %}" methods="GET">Edit</a>
+                             <a class="btn btn-primary"
+                               href="{% url 'delete_post' post.id %}" methods="DELETE">Delete</a>
+                            {% endif %}
+                            <a class="btn btn-primary" href="{% url 'new_comment' post.id %}" methods="GET">Add comment</a>
+                            {% for com in allRelComments %}
+                                {% if com.post == post %}
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img src="../media/{{ com.photo }}" class="media-object" style="width:150px" onerror="this.src='../static/img/hadoop.png'" alt="No_image_avatar">
+                                        </div>
+                                        <div class="media-body">
+                                            <br> Author: {{ com.author }}
+                                            <br>Published: {{ com.publishing_time }}, Edited: {{ com.last_update_time }} <br>
+                                            <br>
+                                            <p>{{ com.content}}</p>
+                                            {% if user == com.author %}
+                                                <a class="btn btn-default" href="{% url 'edit_comment' com.id %}" methods="GET">Edit</a>
+                                                <a class="btn btn-default" href="{% url 'delete_comment' com.id %}" methods="DELETE">Delete</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+{% endblock %}
